@@ -1,0 +1,7 @@
+#ifndef MUH_UNICODE
+#define MUH_UNICODE
+
+#define BOX_MIDDLE_SPLIT_LEFT L"\u2524"
+#define BOX_MIDDLE_SPLIT_RIGHT L"\u251C"
+
+#endif
