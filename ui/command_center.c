@@ -8,19 +8,26 @@
 
 #define MSG_HISTORY 50
 #define MAX_MSG_LEN (MAX_X - 2)
-#define FIRST_AVAILABLE_MESSAGE (COMMAND_CENTER_TOP + 1)
+#define FIRST_AVAILABLE_MESSAGE (1)
 
 // ring buffer of messages to be displayed
 static char *messages[MSG_HISTORY];
 static size_t num_messages;
+static WINDOW *win;
 
 muh_panel *init_cmd_center(void) {
-    struct muh_box command_center_box = {
-        {0, COMMAND_CENTER_TOP},
-        {MAX_X, MAX_Y},
-    };
+    win = newwin(0, 0, COMMAND_CENTER_TOP, 0);
+    box(win, 0, 0);
+    wrefresh(win);
+    return NULL;
 
-    return new_panel(command_center_box, "Command Log");
+    //
+    // struct muh_box command_center_box = {
+    //     {0, COMMAND_CENTER_TOP},
+    //     {MAX_X, MAX_Y},
+    // };
+    //
+    // return new_panel(command_center_box, "Command Log");
 }
 
 int normalize(int actual, int max) {
@@ -53,7 +60,7 @@ void log_msg(const char *msg) {
     // clear command center
     for (int i = FIRST_AVAILABLE_MESSAGE; i < MAX_Y; ++i) {
         for (int j = 1; j < MAX_X; ++j) {
-            mvaddch(i, j, ' ');
+            mvwaddch(win, i, j, ' ');
 
         }
     }
@@ -63,10 +70,10 @@ void log_msg(const char *msg) {
     int base = MIN(num_messages, MAX_MESSAGES);
     for (int i = 0; i < base; ++i) {
         int normalized = normalize(num_messages - 1 - i, MSG_HISTORY);
-        mvaddstr(FIRST_AVAILABLE_MESSAGE + (base - 1 - i), 1,
+        mvwaddstr(win, FIRST_AVAILABLE_MESSAGE + (base - 1 - i), 1,
                  messages[normalized]);
     }
 
     move(last_y, last_x);
-    refresh();
+    wrefresh(win);
 }

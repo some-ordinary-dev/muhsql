@@ -145,11 +145,11 @@ int main(void) {
     MAX_X -= 1;
 
     // init screen layout
-    muh_panel *cmd_center = init_cmd_center();
+    init_cmd_center();
     muh_panel *tree_viewer = init_tree_viewer();
     muh_panel *query_window = init_query_window();
 
-    panels[num_panels++] = cmd_center;
+    // panels[num_panels++] = cmd_center;
     panels[num_panels++] = tree_viewer;
     panels[num_panels++] = query_window;
 
